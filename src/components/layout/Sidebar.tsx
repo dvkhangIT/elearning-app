@@ -3,11 +3,12 @@ import { menuItems } from "@/constants";
 import { TMenuItem } from "@/app/types";
 import { ActiveLink } from "../common";
 import { UserButton } from "@clerk/nextjs";
+import ModeToggle from "../common/ModeToggle";
 const Sidebar = () => {
   return (
-    <div className="border-r border-gray-200 p-5 bg-white flex flex-col">
+    <div className="border-r border-gray-200 p-5 bg-white flex flex-col dark:bg-grayDarker dark:border-opacity-10">
       <a href="/" className="logo font-bold text-3xl inline-block mb-5">
-        <b className="text-primary">U</b>cademy
+        <b className="text-primary">E</b>learning
       </a>
       <ul className="flex flex-col gap-2">
         {menuItems.map((item, index) => (
@@ -19,7 +20,8 @@ const Sidebar = () => {
           ></MenuItem>
         ))}
       </ul>
-      <div className="flex justify-end items-center mt-auto">
+      <div className="flex justify-end items-center mt-auto gap-2">
+        <ModeToggle></ModeToggle>
         <UserButton />
       </div>
     </div>

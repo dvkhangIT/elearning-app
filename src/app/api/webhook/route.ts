@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   if (eventType === "user.created") {
     // create user to database
     const {
-      email: emailAddress,
+      email_addresses: emailAddress,
       id,
       image_url: imageURL,
       username,

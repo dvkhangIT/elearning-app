@@ -3,7 +3,7 @@ import { EUserRole } from "@/app/types/enums";
 import { getUserInfo } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import React, { use } from "react";
+import React from "react";
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   const { userId } = auth();

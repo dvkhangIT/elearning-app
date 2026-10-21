@@ -1,15 +1,18 @@
 import type { Config } from "tailwindcss";
-
+import { withUt } from "uploadthing/tw";
 const config: Config = {
   darkMode: ["class"],
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./utils/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
       screens: {
         "3xl": "2000px",
       },
       colors: {
-        primary: "#DF301C",
+        primary: "#8873EF",
         secondary: "#FF9100",
         grayDarkest: "#131316",
         grayDarker: "#212126",
@@ -36,4 +39,4 @@ const config: Config = {
   },
   plugins: [],
 };
-export default config;
+export default withUt(config);

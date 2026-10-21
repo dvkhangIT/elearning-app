@@ -7,14 +7,18 @@ import { useAuth, UserButton } from "@clerk/nextjs";
 import ModeToggle from "../common/ModeToggle";
 import { IconUsers } from "../icons";
 import Link from "next/link";
+import Image from "next/image";
 const Sidebar = () => {
   const { userId } = useAuth();
   return (
-    <div className="border-r border-gray-200 p-5 bg-white flex flex-col dark:bg-grayDarker dark:border-opacity-10">
-      <a href="/" className="logo font-bold text-3xl inline-block mb-5">
-        <b className="text-primary">E</b>learning
+    <div className="hidden border-r p-5 lg:flex flex-col dark:bg-grayDarker fixed top-0 bottom-0 left-0 w-[300px] borderDarkMode bgDarkMode">
+      <a href="/" className="logo font-bold text-3xl mb-5 flex items-center">
+        <span>
+          <Image alt="logo" src="/logo.png" width={25} height={25}></Image>
+        </span>
+        <span className="text-primary">learning</span>
       </a>
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-1">
         {menuItems.map((item, index) => (
           <MenuItem
             key={index}
@@ -40,12 +44,12 @@ const Sidebar = () => {
     </div>
   );
 };
-function MenuItem({ url = "/", title = "", icon }: TMenuItem) {
+export function MenuItem({ url = "/", title = "", icon, onlyIcon }: TMenuItem) {
   return (
     <li>
       <ActiveLink url={url}>
         {icon}
-        {title}
+        {onlyIcon ? null : title}
       </ActiveLink>
     </li>
   );

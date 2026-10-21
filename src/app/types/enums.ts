@@ -9,11 +9,11 @@ enum EUserRole {
   EXPERT = "EXPERT",
 }
 enum ECourseStatus {
-  APPROVED = "APPREVED",
+  APPROVED = "APPROVED",
   PENDING = "PENDING",
   REJECTED = "REJECTED",
 }
-enum ECouresLevel {
+enum ECourseLevel {
   BEGINNER = "BEGINNER",
   INTERMEDIATE = "INTERMEDIATE",
   ADVANCED = "ADVANCED",
@@ -23,4 +23,4 @@ enum ELessonType {
   TEXT = "TEXT",
   QUIZ = "QUIZ",
 }
-export { EUserStatus, EUserRole, ECouresLevel, ECourseStatus, ELessonType };
+export { EUserStatus, EUserRole, ECourseLevel, ECourseStatus, ELessonType };

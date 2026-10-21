@@ -1,5 +1,6 @@
-import { ECouresLevel, ECourseStatus } from "@/app/types/enums";
+import { ECourseLevel, ECourseStatus } from "@/app/types/enums";
 import { Document, model, models, Schema } from "mongoose";
+import { boolean } from "zod";
 
 export interface ICourse extends Document {
   _id: string;
@@ -13,7 +14,7 @@ export interface ICourse extends Document {
   status: ECourseStatus;
   created_at: Date;
   author: Schema.Types.ObjectId;
-  level: ECouresLevel;
+  level: ECourseLevel;
   views: number;
   rating: number[];
   info: {
@@ -25,6 +26,7 @@ export interface ICourse extends Document {
     }[];
   };
   lectures: Schema.Types.ObjectId[];
+  _destroy: boolean;
 }
 const courseSchema = new Schema<ICourse>({
   title: {
@@ -37,15 +39,18 @@ const courseSchema = new Schema<ICourse>({
   },
   image: {
     type: String,
+    default: "",
   },
   intro_url: {
     type: String,
   },
   desc: {
     type: String,
+    default: "",
   },
   price: {
     type: Number,
+    default: 0,
   },
   sale_price: {
     type: Number,
@@ -94,6 +99,15 @@ const courseSchema = new Schema<ICourse>({
         },
       },
     ],
+  },
+  level: {
+    type: String,
+    enum: Object.values(ECourseLevel),
+    default: ECourseLevel.BEGINNER,
+  },
+  _destroy: {
+    type: Boolean,
+    default: false,
   },
 });
 const Course = models.Course || model<ICourse>("Course", courseSchema);

@@ -18,7 +18,7 @@
   .svg-animate {
     stroke-dashoffset: 100;
     stroke-dasharray: 100;
-    animation: dash 3s linear forwards;
+    animation: dash 2s linear forwards;
   }
 
   @keyframes dash {
@@ -135,7 +135,7 @@ html body .swal2-container {
   .swal2-title {
     @apply font-bold text-xl;
   }
-  .swal2-actions {
+  /* .swal2-actions {
     .swal2-confirm {
       @apply bg-primary;
     }
@@ -145,7 +145,7 @@ html body .swal2-container {
     .swal2-confirm {
       @apply w-[150px];
     }
-  }
+  } */
 }
 .animate-bar {
   animation: animate-width 5s linear 1;

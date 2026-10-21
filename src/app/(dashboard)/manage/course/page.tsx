@@ -1,7 +1,16 @@
+import CourseManage from "@/components/course/CourseManage";
+import { getAllCourse } from "@/lib/actions/course.action";
 import React from "react";
 
-const page = () => {
-  return <div>Quan ly khoa hoc</div>;
+const page = async () => {
+  const courses = await getAllCourse();
+  return (
+    <>
+      <CourseManage
+        courses={courses ? JSON.parse(JSON.stringify(courses)) : []}
+      ></CourseManage>
+    </>
+  );
 };
 
 export default page;

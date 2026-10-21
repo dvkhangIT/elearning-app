@@ -1,17 +1,32 @@
-type TActiveLinkProps = {
+import { ICourse } from "@/database/course.model";
+import { ECourseStatus } from "./enums";
+
+export type TActiveLinkProps = {
   url: string;
   children: React.ReactNode;
 };
-type TMenuItem = {
+export type TMenuItem = {
   url: string;
   title: string;
   icon: React.ReactNode;
+  onlyIcon?: boolean;
 };
-type TCreateUserParams = {
+// user
+export type TCreateUserParams = {
   clerkId: string;
   username: string;
   email: string;
   name?: string;
   avatar?: string;
 };
-export { TMenuItem, TActiveLinkProps, TCreateUserParams };
+// course
+export type TCreateCouseParams = {
+  title: string;
+  slug: string;
+  author: string;
+};
+export type TUpdateCourseParams = {
+  slug: string;
+  updateData: Partial<ICourse>;
+  path?: string;
+};

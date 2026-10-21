@@ -99,6 +99,7 @@ const FormLabel = React.forwardRef<
       className={cn(
         error && "text-red-500 dark:text-red-500",
         "cursor-pointer text-sm font-semibold",
+        "text-sm font-semibold",
         className,
       )}
       {...props}

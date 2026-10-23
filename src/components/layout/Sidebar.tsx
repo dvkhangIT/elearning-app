@@ -14,7 +14,13 @@ const Sidebar = () => {
     <div className="hidden border-r p-5 lg:flex flex-col dark:bg-grayDarker fixed top-0 bottom-0 left-0 w-[300px] borderDarkMode bgDarkMode">
       <a href="/" className="logo font-bold text-3xl mb-5 flex items-center">
         <span>
-          <Image alt="logo" src="/logo.png" width={25} height={25}></Image>
+          <Image
+            alt="logo"
+            src="/logo.png"
+            width={25}
+            height={25}
+            className="w-auto h-auto"
+          ></Image>
         </span>
         <span className="text-primary">learning</span>
       </a>

@@ -1,6 +1,5 @@
 import { ECourseLevel, ECourseStatus } from "@/app/types/enums";
 import { Document, model, models, Schema } from "mongoose";
-import { boolean } from "zod";
 
 export interface ICourse extends Document {
   _id: string;

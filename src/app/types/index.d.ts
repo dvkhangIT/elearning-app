@@ -1,5 +1,5 @@
 import { ICourse } from "@/database/course.model";
-import { ECourseStatus } from "./enums";
+import { ILecture } from "@/database/lecture.model";
 
 export type TActiveLinkProps = {
   url: string;
@@ -30,6 +30,10 @@ export type TUpdateCourseParams = {
   updateData: Partial<ICourse>;
   path?: string;
 };
+export interface TCourseUpdateContent extends Omit<ICourse, "lectures"> {
+  lectures: ILecture[];
+}
+// Lecture
 export type TCreateLectureParams = {
   course: string;
   title?: string;

@@ -70,7 +70,7 @@ const courseSchema = new Schema<ICourse>({
   lectures: [
     {
       type: Schema.Types.ObjectId,
-      ref: "lecture",
+      ref: "Lecture",
     },
   ],
   rating: {

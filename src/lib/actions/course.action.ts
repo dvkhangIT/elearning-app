@@ -1,17 +1,29 @@
 "use server";
-import { TCreateCouseParams, TUpdateCourseParams } from "@/app/types";
-import { connectionToDatabase } from "../mongoose";
+import {
+  TCourseUpdateContent,
+  TCreateCouseParams,
+  TUpdateCourseParams,
+} from "@/app/types";
 import Course, { ICourse } from "@/database/course.model";
+import Lecture from "@/database/lecture.model";
 import { revalidatePath } from "next/cache";
+import { connectionToDatabase } from "../mongoose";
 // fetching
 export async function getCourseBySlug({
   slug,
 }: {
   slug: string;
-}): Promise<ICourse | undefined> {
+}): Promise<TCourseUpdateContent | undefined> {
   try {
     connectionToDatabase();
-    const findCourse = await Course.findOne({ slug });
+    const findCourse = await Course.findOne({ slug }).populate({
+      path: "lectures",
+      model: Lecture,
+      select: "_id title",
+      match: {
+        _destroy: false,
+      },
+    });
     return findCourse;
   } catch (error) {
     console.log(`🚀 ~ getCourseBySlug ~ error:`, error);

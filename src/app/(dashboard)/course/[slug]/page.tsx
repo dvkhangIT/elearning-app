@@ -9,6 +9,7 @@ import {
   Button,
 } from "@/components/ui";
 import { courseLevelTitle } from "@/constants";
+import { ILecture } from "@/database/lecture.model";
 import { getCourseBySlug } from "@/lib/actions/course.action";
 import Image from "next/image";
 import React from "react";
@@ -20,6 +21,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
   if (!data) return null;
   if (data.status !== ECourseStatus.APPROVED) return <PageNotFound />;
   const videoId = data.intro_url?.split("v=")[1];
+  const lectures = data.lectures || [];
   return (
     <div className="grid lg:grid-cols-[2fr,1fr] gap-10 min-h-screen">
       <div>
@@ -60,7 +62,22 @@ const page = async ({ params }: { params: { slug: string } }) => {
             <BoxInfo title="Thời lượng">100</BoxInfo>
           </div>
         </BoxSection>
-        <div className="leading-normal mb-10">{data.desc}</div>
+        <BoxSection title="Nội dung">
+          <div className="flex flex-col gap-3">
+            {lectures.map((lecture: ILecture) => (
+              <Accordion collapsible type="single" key={lecture._id}>
+                <AccordionItem value={lecture._id}>
+                  <AccordionTrigger>
+                    <div className="flex gap-3 items-center w-full justify-between pr-5">
+                      <div>{lecture.title}</div>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent></AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            ))}
+          </div>
+        </BoxSection>
         <BoxSection title="Yêu cầu">
           <div className="leading-normal mb-10">
             {data.info.requirements.map((r, index) => (

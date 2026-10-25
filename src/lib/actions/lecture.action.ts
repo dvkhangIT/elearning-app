@@ -1,9 +1,9 @@
 "use server";
 import { TCreateLectureParams, TUpdateLectureParams } from "@/app/types";
-import { connectionToDatabase } from "../mongoose";
 import Course from "@/database/course.model";
 import Lecture from "@/database/lecture.model";
 import { revalidatePath } from "next/cache";
+import { connectionToDatabase } from "../mongoose";
 export async function createLecture(params: TCreateLectureParams) {
   try {
     connectionToDatabase();
@@ -23,9 +23,15 @@ export async function createLecture(params: TCreateLectureParams) {
 export async function updateLecture(params: TUpdateLectureParams) {
   try {
     connectionToDatabase();
-    await Lecture.findByIdAndUpdate(params.lectureId, params.updateData, {
-      new: true,
-    });
+    const res = await Lecture.findByIdAndUpdate(
+      params.lectureId,
+      params.updateData,
+      {
+        new: true,
+      },
+    );
+    revalidatePath(params.updateData.path || "/");
+    if (!res) return;
     return {
       success: true,
     };

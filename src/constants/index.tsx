@@ -1,10 +1,10 @@
 import { TMenuItem } from "@/app/types";
 import { ECourseLevel, ECourseStatus } from "@/app/types/enums";
 import {
-  IconExplore,
-  IconPlay,
   IconComment,
+  IconExplore,
   IconOrder,
+  IconPlay,
   IconStudy,
   IconUsers,
 } from "@/components/icons";

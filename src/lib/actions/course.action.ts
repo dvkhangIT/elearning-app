@@ -6,6 +6,7 @@ import {
 } from "@/app/types";
 import Course, { ICourse } from "@/database/course.model";
 import Lecture from "@/database/lecture.model";
+import Lesson from "@/database/lesson.model";
 import { revalidatePath } from "next/cache";
 import { connectionToDatabase } from "../mongoose";
 // fetching
@@ -22,6 +23,13 @@ export async function getCourseBySlug({
       select: "_id title",
       match: {
         _destroy: false,
+      },
+      populate: {
+        path: "lessons",
+        model: Lesson,
+        match: {
+          _destroy: false,
+        },
       },
     });
     return findCourse;

@@ -1,6 +1,7 @@
 import PageNotFound from "@/app/not-found";
 import { ECourseStatus } from "@/app/types/enums";
-import { IconPlay, IconStudy, IconUsers } from "@/components/icons";
+import { IconPlay, IconStudy } from "@/components/icons";
+import IconUsers from "@/components/icons/IconUsers";
 import {
   Accordion,
   AccordionContent,
@@ -9,7 +10,7 @@ import {
   Button,
 } from "@/components/ui";
 import { courseLevelTitle } from "@/constants";
-import { ILecture } from "@/database/lecture.model";
+import { ILesson } from "@/database/lesson.model";
 import { getCourseBySlug } from "@/lib/actions/course.action";
 import Image from "next/image";
 import React from "react";
@@ -64,15 +65,30 @@ const page = async ({ params }: { params: { slug: string } }) => {
         </BoxSection>
         <BoxSection title="Nội dung">
           <div className="flex flex-col gap-3">
-            {lectures.map((lecture: ILecture) => (
+            {lectures.map((lecture: any) => (
               <Accordion collapsible type="single" key={lecture._id}>
-                <AccordionItem value={lecture._id}>
+                <AccordionItem value={lecture._id.toString()}>
                   <AccordionTrigger>
                     <div className="flex gap-3 items-center w-full justify-between pr-5">
                       <div>{lecture.title}</div>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent></AccordionContent>
+                  <AccordionContent className=" !bg-transparent border-none p-0">
+                    <div className="flex flex-col gap-5">
+                      {lecture.lessons.map((lesson: ILesson) => (
+                        <div
+                          className="flex items-center gap-3 bgDarkMode border p-3 borderDarkMode rounded-lg text-sm font-semibold"
+                          key={lesson._id}
+                        >
+                          <IconPlay className="size-4" />
+                          <h4>{lesson.title}</h4>
+                          <span className="ml-auto text-sm font-medium">
+                            {lesson.duration} phút
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
                 </AccordionItem>
               </Accordion>
             ))}

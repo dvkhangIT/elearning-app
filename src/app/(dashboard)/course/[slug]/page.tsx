@@ -2,6 +2,7 @@ import PageNotFound from "@/app/not-found";
 import { ECourseStatus } from "@/app/types/enums";
 import { IconPlay, IconStudy } from "@/components/icons";
 import IconUsers from "@/components/icons/IconUsers";
+import LessonItem from "@/components/lesson/LessonItem";
 import {
   Accordion,
   AccordionContent,
@@ -63,8 +64,8 @@ const page = async ({ params }: { params: { slug: string } }) => {
             <BoxInfo title="Thời lượng">100</BoxInfo>
           </div>
         </BoxSection>
-        <BoxSection title="Nội dung">
-          <div className="flex flex-col gap-3">
+        <BoxSection title="Nội dung khóa học">
+          <div className="flex flex-col gap-5">
             {lectures.map((lecture: any) => (
               <Accordion collapsible type="single" key={lecture._id}>
                 <AccordionItem value={lecture._id.toString()}>
@@ -74,18 +75,9 @@ const page = async ({ params }: { params: { slug: string } }) => {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className=" !bg-transparent border-none p-0">
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-5 mt-5">
                       {lecture.lessons.map((lesson: ILesson) => (
-                        <div
-                          className="flex items-center gap-3 bgDarkMode border p-3 borderDarkMode rounded-lg text-sm font-semibold"
-                          key={lesson._id}
-                        >
-                          <IconPlay className="size-4" />
-                          <h4>{lesson.title}</h4>
-                          <span className="ml-auto text-sm font-medium">
-                            {lesson.duration} phút
-                          </span>
-                        </div>
+                        <LessonItem key={lesson._id} lesson={lesson} />
                       ))}
                     </div>
                   </AccordionContent>

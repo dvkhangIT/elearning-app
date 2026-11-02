@@ -2,7 +2,6 @@ import PageNotFound from "@/app/not-found";
 import { ECourseStatus } from "@/app/types/enums";
 import { IconPlay, IconStudy } from "@/components/icons";
 import IconUsers from "@/components/icons/IconUsers";
-import LessonItem from "@/components/lesson/LessonItem";
 import {
   Accordion,
   AccordionContent,
@@ -11,10 +10,10 @@ import {
   Button,
 } from "@/components/ui";
 import { courseLevelTitle } from "@/constants";
-import { ILesson } from "@/database/lesson.model";
 import { getCourseBySlug } from "@/lib/actions/course.action";
 import Image from "next/image";
 import React from "react";
+import LessonContent from "../../[course]/lesson/LessonContent";
 
 const page = async ({ params }: { params: { slug: string } }) => {
   const data = await getCourseBySlug({
@@ -65,26 +64,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
           </div>
         </BoxSection>
         <BoxSection title="Nội dung khóa học">
-          <div className="flex flex-col gap-5">
-            {lectures.map((lecture: any) => (
-              <Accordion collapsible type="single" key={lecture._id}>
-                <AccordionItem value={lecture._id.toString()}>
-                  <AccordionTrigger>
-                    <div className="flex gap-3 items-center w-full justify-between pr-5">
-                      <div>{lecture.title}</div>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className=" !bg-transparent border-none p-0">
-                    <div className="flex flex-col gap-5 mt-5">
-                      {lecture.lessons.map((lesson: ILesson) => (
-                        <LessonItem key={lesson._id} lesson={lesson} />
-                      ))}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            ))}
-          </div>
+          <LessonContent lectures={lectures}></LessonContent>
         </BoxSection>
         <BoxSection title="Yêu cầu">
           <div className="leading-normal mb-10">

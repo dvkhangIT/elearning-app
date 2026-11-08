@@ -51,7 +51,9 @@ export async function getLessonBySlug({
 }): Promise<ILesson | undefined> {
   try {
     connectionToDatabase();
-    const findLesson = Lesson.findOne({ slug, course });
+    const findLesson = Lesson.findOne({ slug, course }).select(
+      "title video_url content",
+    );
     return findLesson;
   } catch (error) {
     console.log(error);
@@ -64,7 +66,9 @@ export async function findAllLesson({
 }): Promise<ILesson[] | undefined> {
   try {
     connectionToDatabase();
-    const lessons = await Lesson.find({ course });
+    const lessons = await Lesson.find({ course }).select(
+      "title video_url content slug",
+    );
     return lessons;
   } catch (error) {
     console.log(error);

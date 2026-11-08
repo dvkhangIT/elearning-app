@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { OurFileRouter } from "@/app/api/uploadthing/core";
+import { ECourseLevel, ECourseStatus } from "@/app/types/enums";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,28 +16,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { Textarea } from "../ui/textarea";
-import { ECourseLevel, ECourseStatus } from "@/app/types/enums";
-import { updateCourse } from "@/lib/actions/course.action";
-import { ICourse } from "@/database/course.model";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-import { useImmer } from "use-immer";
-import { IconAdd } from "../icons";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { courseLevel, courseStatus } from "@/constants";
+import { ICourse } from "@/database/course.model";
+import { updateCourse } from "@/lib/actions/course.action";
 import { UploadButton } from "@uploadthing/react";
 import Image from "next/image";
-import { OurFileRouter } from "@/app/api/uploadthing/core";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useImmer } from "use-immer";
+import { IconAdd } from "../icons";
+import { Textarea } from "../ui/textarea";
 const formSchema = z.object({
   title: z.string().min(10, "Tên khóa học phải có ít nhất 10 ký tự"),
   slug: z.string().optional(),
@@ -240,7 +239,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                           src={imageWatch}
                           alt=""
                           fill
-                          className="w-full object-cover h-full"
+                          className="w-full object-cover h-full rounded-md"
                         ></Image>
                       )}
                     </div>

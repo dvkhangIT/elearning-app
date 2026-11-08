@@ -37,7 +37,7 @@ const LessonItem = ({
     <div
       className={cn(
         "flex items-center gap-2 bgDarkMode border p-4 borderDarkMode rounded-lg text-sm whitespace-normal",
-        isActive ? "text-primary font-semibold" : "",
+        isActive ? "font-bold" : "",
       )}
     >
       {url && (

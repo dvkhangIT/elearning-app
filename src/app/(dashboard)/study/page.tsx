@@ -1,15 +1,14 @@
-import { CourseGrid } from "@/components/common";
 import Heading from "@/components/common/Heading";
-import CourseItem from "@/components/course/CourseItem";
-import React from "react";
-
-const page = () => {
+import { getUserCourse } from "@/lib/actions/user.action";
+import StudyCourse from "./StudyCourse";
+const courses = await getUserCourse();
+const page = async () => {
   return (
     <>
       <Heading>Khu vực học tập</Heading>
-      <CourseGrid>
-        <CourseItem />
-      </CourseGrid>
+      <StudyCourse
+        courses={courses ? JSON.parse(JSON.stringify(courses)) : []}
+      ></StudyCourse>
     </>
   );
 };

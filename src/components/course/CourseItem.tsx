@@ -1,10 +1,18 @@
+import { commonClassName } from "@/constants";
+import { ICourse } from "@/database/course.model";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { IconClock, IconEye, IconStar } from "../icons";
-import { ICourse } from "@/database/course.model";
 
-const CourseItem = ({ data }: { data: ICourse }) => {
+const CourseItem = ({
+  data,
+  cta,
+  url,
+}: {
+  data: ICourse;
+  cta?: string;
+  url?: string;
+}) => {
   if (!data) return null;
   const courseInfo = [
     {
@@ -22,9 +30,10 @@ const CourseItem = ({ data }: { data: ICourse }) => {
       ),
     },
   ];
+  const courseUrl = url ? url : `/course/${data.slug}`;
   return (
-    <div className="bg-white border-gray-500 p-4 rounded-lg dark:bg-grayDarker dark:border-opacity-10">
-      <Link href={`/course/${data.slug}`} className="block h-[180px] relative">
+    <div className="bg-white border-gray-500 p-4 rounded-lg dark:bg-grayDarker dark:border-opacity-10 flex flex-col">
+      <Link href={courseUrl} className="block h-[180px] relative">
         <Image
           src={data.image}
           alt=""
@@ -37,25 +46,27 @@ const CourseItem = ({ data }: { data: ICourse }) => {
           New
         </span>
       </Link>
-      <div className="pt-4">
-        <h3 className="font-bold text-lg mb-5">{data.title}</h3>
-        <div className="flex items-center gap-3 mb-5 text-xs text-gray-500 dark:text-grayDark">
-          {courseInfo.map((item, index) => (
-            <div key={index} className="flex items-center justify-center gap-2">
-              {item.icon("size-4")}
-              {item.title}
-            </div>
-          ))}
-          <span className="font-bold text-primary ml-auto text-base">
-            {data.price.toLocaleString()}đ
-          </span>
+      <div className="pt-5 flex flex-col flex-1">
+        <h3 className="font-bold text-lg mb-3">{data.title}</h3>
+        <div className="mt-auto">
+          <div className="flex items-center gap-3 mb-5 text-xs text-gray-500 dark:text-grayDark">
+            {courseInfo.map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-center gap-2"
+              >
+                {item.icon("size-4")}
+                {item.title}
+              </div>
+            ))}
+            <span className="font-bold text-primary ml-auto text-base">
+              {data.price.toLocaleString()}đ
+            </span>
+          </div>
+          <Link href={courseUrl} className={commonClassName.btnPrimary}>
+            {cta || "Xem chi tiết"}
+          </Link>
         </div>
-        <Link
-          href={`/course/${data.slug}`}
-          className="flex items-center justify-center mt-10 text-white bg-primary w-full h-12 rounded-lg font-semibold"
-        >
-          Xem chi tiết
-        </Link>
       </div>
     </div>
   );

@@ -1,13 +1,10 @@
 import PageNotFound from "@/app/not-found";
 import Heading from "@/components/common/Heading";
 import { getCourseBySlug } from "@/lib/actions/course.action";
-import { getHistory } from "@/lib/actions/history.action";
 import { findAllLesson } from "@/lib/actions/lesson.action";
-import { getUserInfo } from "@/lib/actions/user.action";
-import { auth } from "@clerk/nextjs/server";
-import LessonContent from "./LessonContent";
-import LessonNavigation from "./LessonNavigation";
-import LessonSaveUrl from "./LessonSaveUrl";
+import LessonNavigation from "../LessonNavigation";
+import LessonSaveUrl from "../LessonSaveUrl";
+
 const page = async ({
   params,
   searchParams,
@@ -19,17 +16,12 @@ const page = async ({
     slug: string;
   };
 }) => {
-  const { userId } = auth();
-  if (!userId) return <PageNotFound />;
-  const findUser = await getUserInfo({ userId });
-  if (!findUser) return <PageNotFound />;
   const course = params.course.toString();
   const slug = searchParams.slug;
   if (!course || !slug) return <PageNotFound />;
   const findCourse = await getCourseBySlug({ slug: course });
   if (!findCourse) return null;
   const courseId = findCourse?._id.toString();
-  if (!findUser.courses.includes(courseId as any)) return <PageNotFound />;
   const lessonList = await findAllLesson({ course: courseId });
   const lessonDetails = lessonList?.find((el) => el.slug === slug);
   if (!lessonDetails) return null;
@@ -38,12 +30,8 @@ const page = async ({
   const nextLesson = lessonList?.[currentLessonIndex + 1];
   const prevLesson = lessonList?.[currentLessonIndex - 1];
   const videoId = lessonDetails?.video_url?.split("v=").at(-1);
-  const lectures = findCourse.lectures || [];
-  const histories = await getHistory({ course: courseId });
-  const completePercentage =
-    ((histories?.length || 0) / (lessonList?.length || 1)) * 100;
   return (
-    <div className="grid xl:grid-cols-[minmax(0,2fr),minmax(0,1fr)] gap-10 min-h-screen items-start">
+    <div>
       <LessonSaveUrl
         url={`/${course}/lesson?slug=${slug}`}
         course={course}
@@ -74,22 +62,6 @@ const page = async ({
             dangerouslySetInnerHTML={{ __html: lessonDetails.content || "" }}
           ></div>
         </div>
-      </div>
-      <div className="sticky top-5 right-0">
-        <div className="h-3 bgDarkMode mb-2 rounded-full border borderDarkMode">
-          <div
-            className="w-0 h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-300"
-            style={{
-              width: `${completePercentage}%`,
-            }}
-          ></div>
-        </div>
-        <LessonContent
-          course={course}
-          slug={slug}
-          lectures={lectures}
-          histories={histories ? JSON.parse(JSON.stringify(histories)) : []}
-        ></LessonContent>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/common/ThemeProvider";
 import { ToastContainer } from "react-toastify";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 export const metadata: Metadata = {
   title: "Học lập trình trực tuyến",
   description: "Khóa học lập trình chất lượng cao",
@@ -34,6 +35,7 @@ export default function RootLayout({
               position="top-right"
             />
           </ThemeProvider>
+          <SpeedInsights />
         </body>
       </html>
     </ClerkProvider>

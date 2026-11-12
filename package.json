@@ -13,6 +13,7 @@
     "@hookform/resolvers": "^3.6.0",
     "@tinymce/tinymce-react": "^6.3.1",
     "@uploadthing/react": "^7.3.3",
+    "@vercel/speed-insights": "^2.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.390.0",

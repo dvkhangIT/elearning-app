@@ -1,11 +1,13 @@
+import { ThemeProvider } from "@/components/common/ThemeProvider";
+import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { manrope } from "./utils";
-import "./globals.scss";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "sweetalert2/dist/sweetalert2.min.css";
-import { ClerkProvider } from "@clerk/nextjs";
-import { ThemeProvider } from "@/components/common/ThemeProvider";
-import { ToastContainer } from "react-toastify";
+import "./globals.scss";
+import { manrope } from "./utils";
 export const metadata: Metadata = {
   title: "Học lập trình trực tuyến",
   description: "Khóa học lập trình chất lượng cao",
@@ -27,6 +29,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <SpeedInsights />
+            <Analytics />
             <ToastContainer
               autoClose={2000}
               hideProgressBar

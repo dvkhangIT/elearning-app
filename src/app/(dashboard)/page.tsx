@@ -2,8 +2,6 @@ import { CourseGrid } from "@/components/common";
 import Heading from "@/components/common/Heading";
 import CourseItem from "@/components/course/CourseItem";
 import { getAllCourse } from "@/lib/actions/course.action";
-import React from "react";
-
 const page = async () => {
   const courses = (await getAllCourse()) || [];
   return (

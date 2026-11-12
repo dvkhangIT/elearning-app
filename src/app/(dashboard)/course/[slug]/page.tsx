@@ -21,7 +21,6 @@ const page = async ({ params }: { params: { slug: string } }) => {
   if (!data) return null;
   if (data.status !== ECourseStatus.APPROVED) return <PageNotFound />;
   const videoId = data.intro_url?.split("v=")[1];
-  const lectures = data.lectures || [];
   return (
     <div className="grid lg:grid-cols-[2fr,1fr] gap-10 min-h-screen">
       <div>
@@ -62,9 +61,6 @@ const page = async ({ params }: { params: { slug: string } }) => {
             <BoxInfo title="Thời lượng">100</BoxInfo>
           </div>
         </BoxSection>
-        {/* <BoxSection title="Nội dung khóa học">
-          <LessonContent lectures={lectures}></LessonContent>
-        </BoxSection> */}
         <BoxSection title="Yêu cầu">
           <div className="leading-normal mb-10">
             {data.info.requirements.map((r, index) => (

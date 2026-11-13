@@ -1,5 +1,34 @@
 "use client";
-import React from "react";
+import { ECourseStatus } from "@/app/types/enums";
+import { cn } from "@/app/utils/common";
+import { commonClassName, courseStatus } from "@/constants";
+import { ICourse } from "@/database/course.model";
+import { updateCourse } from "@/lib/actions/course.action";
+import { debounce } from "lodash";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import Heading from "../common/Heading";
+import {
+  IconDelete,
+  IconEdit,
+  IconEye,
+  IconLeftArrow,
+  IconRightArrow,
+  IconStudy,
+} from "../icons";
+import { Input } from "../ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import {
   Table,
   TableBody,
@@ -8,50 +37,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import Heading from "../common/Heading";
-import Image from "next/image";
-import { commonClassName, courseStatus } from "@/constants";
-import { cn } from "@/app/utils/common";
-import { IconDelete, IconEdit, IconEye, IconStudy } from "../icons";
-import Link from "next/link";
-import { ICourse } from "@/database/course.model";
-import Swal from "sweetalert2";
-import { updateCourse } from "@/lib/actions/course.action";
-import { ECourseStatus } from "@/app/types/enums";
-import { toast } from "react-toastify";
-import { Input } from "../ui/input";
-const IconArrowLeft = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-6 h-6"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
-    />
-  </svg>
-);
-const IconArrowRight = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-6 h-6"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-    />
-  </svg>
-);
 const CourseManage = ({ courses }: { courses: ICourse[] }) => {
   const handleDeleteCourse = (slug: string) => {
     Swal.fire({
@@ -111,6 +96,38 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
       toast.error("Có lỗi xảy ra khi cập nhật!");
     }
   };
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  // Get a new searchParams string by merging the current
+  // searchParams with a provided key/value pair
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+      return params.toString();
+    },
+    [searchParams],
+  );
+  const handelSearchCourse = debounce(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      router.push(`${pathname}?${createQueryString("search", e.target.value)}`);
+    },
+    500,
+  );
+  const handelSelectStatus = (status: ECourseStatus) => {
+    router.push(`${pathname}?${createQueryString("status", status)}`);
+  };
+  const [page, setPage] = useState(1);
+  const handelChangePage = (type: "prev" | "next", page: number) => {
+    if (type == "prev" && page === 1) return;
+    if (type == "prev") setPage((prev) => prev - 1);
+    if (type == "next") setPage((prev) => prev + 1);
+  };
+  useEffect(() => {
+    router.push(`${pathname}?${createQueryString("page", page.toString())}`);
+  }, [page]);
+
   return (
     <>
       <Link
@@ -134,8 +151,31 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
       </Link>
       <div className="flex lg:items-center justify-between mb-10 lg:flex-row gap-5">
         <Heading className="mb-10">Quản lý khóa học</Heading>
-        <div className="w-full lg:w-[300px]">
-          <Input placeholder="Tìm kiếm khóa học..."></Input>
+        <div className="flex gap-3">
+          <div className="w-full lg:w-[300px]">
+            <Input
+              placeholder="Tìm kiếm khóa học..."
+              onChange={(e) => handelSearchCourse(e)}
+            ></Input>
+          </div>
+          <Select
+            onValueChange={(value) =>
+              handelSelectStatus(value as ECourseStatus)
+            }
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Chọn trạng thái" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {courseStatus.map((status) => (
+                  <SelectItem key={status.value} value={status.value}>
+                    {status.title}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <Table className="table-responsive">
@@ -231,11 +271,18 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
         </TableBody>
       </Table>
       <div className="flex justify-end gap-3 mt-5">
-        <button className={commonClassName.paginationButton}>
-          {IconArrowLeft}
+        <button
+          disabled={page === 1 ? true : false}
+          className={commonClassName.paginationButton}
+          onClick={() => handelChangePage("prev", page)}
+        >
+          <IconLeftArrow />
         </button>
-        <button className={commonClassName.paginationButton}>
-          {IconArrowRight}
+        <button
+          className={commonClassName.paginationButton}
+          onClick={() => handelChangePage("next", page)}
+        >
+          <IconRightArrow />
         </button>
       </div>
     </>

@@ -2,11 +2,13 @@
 import {
   TCourseUpdateContent,
   TCreateCouseParams,
+  TGetAllCourseParams,
   TUpdateCourseParams,
 } from "@/app/types";
 import Course, { ICourse } from "@/database/course.model";
 import Lecture from "@/database/lecture.model";
 import Lesson from "@/database/lesson.model";
+import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { connectionToDatabase } from "../mongoose";
 // fetching
@@ -40,10 +42,24 @@ export async function getCourseBySlug({
     console.log(`🚀 ~ getCourseBySlug ~ error:`, error);
   }
 }
-export async function getAllCourse(): Promise<ICourse[] | undefined> {
+export async function getAllCourse(
+  params: TGetAllCourseParams,
+): Promise<ICourse[] | undefined> {
   try {
     connectionToDatabase();
-    const courses = await Course.find();
+    const { page = 1, limit = 10, search, status } = params;
+    const skip = (page - 1) * limit;
+    const query: FilterQuery<typeof Course> = {};
+    if (search) {
+      query.$or = [{ title: { $regex: search, $options: "i" } }];
+    }
+    if (status) {
+      query.status = status;
+    }
+    const courses = await Course.find(query)
+      .skip(skip)
+      .limit(limit)
+      .sort({ created_at: -1 });
     return courses;
   } catch (error) {
     console.log(`🚀 ~ getAllCourse ~ error:`, error);

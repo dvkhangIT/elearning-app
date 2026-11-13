@@ -82,3 +82,9 @@ export type TCreateHistoryParams = {
   checked: boolean | string;
   path: string;
 };
+export type TGetAllCourseParams = {
+  page: number;
+  limit: number;
+  search: string;
+  status: string;
+};
